@@ -9,24 +9,24 @@ class Board
   end
   
   def create_board
-    3.times do |x|
-      row = []
-      3.times { |y| row.push(" ") }
-      grid.push(row)
+    n = 0
+    9.times do |x|
+      grid.push("#{n}")
+      n += 1
     end
+
   end
 
   def show_board
-    print "Column   1    2    3\n"
-    print "Row 1: #{grid[0]}\nRow 2: #{grid[1]}\nRow 3: #{grid[2]}\n"
+    print "#{grid[0..2]}\n#{grid[3..5]}\n#{grid[6..9]}\n"
   end
 
-  def get_current_board
-    @grid
+  def get_grid
+    grid
   end
 
-  def update_board(row, column, pawn)
-    @grid[row - 1][column - 1] = pawn
+  def update_board(position, pawn)
+    grid[position] = pawn
     show_board()
   end
 

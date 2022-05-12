@@ -3,6 +3,7 @@ require "./player.rb"
 
 class TicTacToe
   attr_accessor :player_1, :player_2
+  attr_reader :board
 
   def initialize
     @board = Board.new
@@ -19,8 +20,8 @@ class TicTacToe
   def play_round(player)
     current_player = player
     position = choose_position(current_player)
-    @board.update_board(position[0], position[1], position[2])
-    #check_for_three_in_a_row(@board.get_current_board) ? game_over(player) : play_round(next_player(current_player))
+    board.update_board(position, current_player.pawn)
+    check_for_three_in_a_row(board, player)
     play_round(next_player(current_player))
     
 
@@ -32,23 +33,26 @@ class TicTacToe
   end
 
   def choose_position(player)
-    position = []
+    position = ""
     puts "#{player.name}, choose position"
-    print "Row: "
-    row = gets.to_i
-    print "Column: "
-    column = gets.to_i
-
-    position[0] = row
-    position[1] = column
-    position[2] = player.pawn
+    print "Select position: "
+    position = gets.to_i
 
     position
 
   end
 
-  def check_for_three_in_a_row(board)
-    #some logic ? game_over(player) : next_player(player)
+  def check_for_three_in_a_row(board, player)
+    pawn = player.pawn
+    grid = board.grid
+    grid[0..2].all? {|x| x == pawn } ? game_over(player) : nil
+    grid[3..5].all? {|x| x == pawn } ? game_over(player) : nil
+    grid[6..8].all? {|x| x == pawn } ? game_over(player) : nil
+    grid[0] == pawn && grid[3] == pawn && grid[6] == pawn ? game_over(player) : nil
+    grid[1] == pawn && grid[4] == pawn && grid[7] == pawn ? game_over(player) : nil
+    grid[2] == pawn && grid[5] == pawn && grid[8] == pawn ? game_over(player) : nil
+    grid[0] == pawn && grid[4] == pawn && grid[8] == pawn ? game_over(player) : nil
+    grid[2] == pawn && grid[4] == pawn && grid[6] == pawn ? game_over(player) : nil
   end
 
   def game_over(player)
